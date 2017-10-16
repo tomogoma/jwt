@@ -10,23 +10,23 @@ import (
 
 // JWT Handler handles JWT tokens with the help of the github.com/dgrijalva/jwt-go library.
 // Call NewHandler() to get the correct instance of this struct.
-type JWTHandler struct {
+type Handler struct {
 	hs256key []byte
 	errors.AuthErrCheck
 }
 
-// NewHandler constructs a JWTHandler struct for handling JWT tokens.
-func NewHandler(hs256key []byte) (*JWTHandler, error) {
+// NewHandler constructs a Handler struct for handling JWT tokens.
+func NewHandler(hs256key []byte) (*Handler, error) {
 	if len(hs256key) == 0 {
 		return nil, errors.New("hs256 key was empty")
 	}
-	return &JWTHandler{hs256key: hs256key}, nil
+	return &Handler{hs256key: hs256key}, nil
 }
 
 // Generate generates a JWT token based on provided claims using jwt.SigningMethodHS256
 // to sign the token string. jwt.StandardClaims is a good starting point for a claims
 // struct and can be extended to implement the jwt.Claims interface.
-func (g *JWTHandler) Generate(claims jwt.Claims) (string, error) {
+func (g *Handler) Generate(claims jwt.Claims) (string, error) {
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return tkn.SignedString(g.hs256key)
 }
@@ -34,7 +34,7 @@ func (g *JWTHandler) Generate(claims jwt.Claims) (string, error) {
 // Validate validates a token that was generated using jwt.SigningMethodHS256 to
 // sign the token string.
 //
-// the error - err - returned will evaluate (*JWTHandler).IsAuthError(err) to true if
+// the error - err - returned will evaluate (*Handler).IsAuthError(err) to true if
 // the token is invalid, otherwise any other error is returned if the parameters
 // are invalid e.g. nil claims parameter.
 //
@@ -42,7 +42,7 @@ func (g *JWTHandler) Generate(claims jwt.Claims) (string, error) {
 // token is unmarshalled into.
 //
 // The returned *jwt.Token provides standard information on the token.
-func (g *JWTHandler) Validate(token string, cs jwt.Claims) (*jwt.Token, error) {
+func (g *Handler) Validate(token string, cs jwt.Claims) (*jwt.Token, error) {
 	if token == "" {
 		return nil, errors.NewUnauthorized("token was empty")
 	}

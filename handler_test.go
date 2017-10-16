@@ -79,7 +79,7 @@ func TestJWTHandler_Validate(t *testing.T) {
 	}
 	tkn, err := tg.Generate(claims)
 	if err != nil {
-		t.Fatalf("Error setting up token.JWTHandler#Generate(): %v", err)
+		t.Fatalf("Error setting up token.Handler#Generate(): %v", err)
 	}
 	tgInvalid, err := jwtH.NewHandler([]byte(authKeyAlt))
 	if err != nil {
@@ -87,7 +87,7 @@ func TestJWTHandler_Validate(t *testing.T) {
 	}
 	tknInvalid, err := tgInvalid.Generate(claims)
 	if err != nil {
-		t.Fatalf("Error setting up token.JWTHandler#Generate(): %v", err)
+		t.Fatalf("Error setting up token.Handler#Generate(): %v", err)
 	}
 
 	tcs := []struct {
